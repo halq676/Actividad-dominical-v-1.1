@@ -105,7 +105,7 @@ window.agregarGallinas = function(){
   inventario.Pospiernas += cant * 2;
   inventario.Rabadillas += cant * 1;
   inventario.Apostador += cant * 1;
-  inventario.Sopas += cant * 1;
+  inventario.Sopas += cant * 3;
   guardarInventario();
   actualizarInventarioDOM();
   document.getElementById('gallinasInput').value = '';

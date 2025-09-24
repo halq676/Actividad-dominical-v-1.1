@@ -1,0 +1,250 @@
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+}
+
+h2, h3 {
+  color: #333;
+  text-align: center;
+}
+
+header {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+}
+
+#header-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#logo {
+  height: 40px;
+  margin-right: 10px;
+}
+
+#logo-text {
+  font-size: 18px;
+  font-style: italic;
+}
+
+/* Estilos del contenedor */
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+  margin-bottom: 20px;
+}
+
+input[type="number"], input[type="text"], select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+button.reset-btn {
+  background-color: #f44336;
+}
+
+button.reset-btn:hover {
+  background-color: #e53935;
+}
+
+/* Estilos para la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table, th, td {
+  border: 1px solid #ccc;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+td input, td select {
+  width: 100%;
+  font-size: 16px;
+  padding: 5px;
+  border: none;
+  text-align: center;
+}
+
+td button {
+  background-color: #ff9800;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+td button:hover {
+  background-color: #fb8c00;
+}
+
+tfoot {
+  background-color: #f2f2f2;
+}
+
+tfoot td {
+  font-weight: bold;
+}
+
+/* Estilo para las filas de venta */
+.lineaVenta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.lineaVenta input,
+.lineaVenta select {
+  width: 30%;
+  font-size: 16px;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+#ventasMultiples {
+  margin-top: 20px;
+}
+
+#ventasMultiples .lineaVenta {
+  margin-top: 10px;
+}
+
+/* Estilos para los mensajes flotantes */
+#mensajeFlotante {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  display: none;
+  z-index: 999;
+}
+
+#totalGeneral, #totalPresas, #totalGallinas {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Estilos del formulario de agregar gallinas */
+#gallinasInput {
+  width: 60%;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#clienteInput {
+  width: 60%;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+select {
+  width: 60%;
+  display: inline-block;
+}
+
+#tipoPresa, #cantidadInput, #valorInput {
+  width: 30%;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#reset-buttons {
+  text-align: center;
+}
+
+/* Estilos para el formulario de ventas realizadas */
+#ventasTabla {
+  width: 100%;
+  margin-top: 30px;
+}
+
+#ventasTabla td, #ventasTabla th {
+  padding: 10px;
+  text-align: center;
+}
+
+/* Estilos adicionales */
+#totalGallinas {
+  color: #0277bd;
+}
+
+#totalPresas {
+  color: #388e3c;
+}
+
+#totalGeneral {
+  color: #d32f2f;
+}
+.encabezado {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #ccc;
+}
+
+.logo {
+  width: 60px;
+  height: 100px;
+  object-fit: contain;
+  margin-right: 15px;
+
+  
+}
+
+
+
+
+.texto-biblico {
+  font-size: 16px;
+  color: #333;
+  font-weight: normal;
+  line-height: 1.4;
+}

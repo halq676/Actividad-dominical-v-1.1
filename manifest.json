@@ -1,0 +1,26 @@
+{
+  "name": "Inventario de Presas",
+  "short_name": "Inventario",
+  "description": "Aplicación para gestión de inventario y ventas de presas de gallinas",
+  "start_url": "./indext.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4CAF50",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "images/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/logo-512x512.jpg",
+      "sizes": "512x512",
+      "type": "image/jpg"
+    }
+  ]
+}
+
+
+    

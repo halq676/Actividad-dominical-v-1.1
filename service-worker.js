@@ -6,10 +6,7 @@ const urlsToCache = [
   '/Actividad-dominical-v-1.1/style.css',
   '/Actividad-dominical-v-1.1/main.js',
   '/Actividad-dominical-v-1.1/manifest.json',
-  '/Actividad-dominical-v-1.1/offline.html',
-  '/Actividad-dominical-v-1.1/images/logo.jpg',
-  '/Actividad-dominical-v-1.1/images/icon-192x192.png',
-  '/Actividad-dominical-v-1.1/images/icon-512x512.png',
+  
   
   // ------------------------------------------------------------------
   //  ¡CRÍTICO! CACHEO DE LIBRERÍAS CDN (URLs completas)

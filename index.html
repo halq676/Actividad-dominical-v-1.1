@@ -90,15 +90,6 @@
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#ff6600">
 
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./service-worker.js')
-        .then(reg => console.log('✅ Service Worker registrado:', reg.scope))
-        .catch(err => console.log('❌ Error registrando SW:', err));
-    });
-  }
-</script>
 
 <body class="container mt-4">
 
@@ -189,12 +180,12 @@
   <script src="main.js"></script>
   <script>
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./service-worker.js')
-        .then(reg => console.log('✅ Service Worker registrado:', reg.scope))
-        .catch(err => console.log('❌ Error al registrar SW:', err));
-    });
-  }
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/Actividad-dominical-v-1.1/service-worker.js')
+      .then(reg => console.log('✅ SW:', reg.scope))
+      .catch(err => console.log('❌ SW error:', err));
+  });
+}
 </script>
 
 </body>

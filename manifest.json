@@ -1,24 +1,24 @@
-{
+{ "id": "/Actividad-dominical-v-1.1/",
   "name": "Inventario de Presas",
   "short_name": "Inventario",
   "description": "Aplicación para gestión de inventario y ventas de presas de gallinas",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/Actividad-dominical-v-1.1/index.html",
+  "scope": "/Actividad-dominical-v-1.1/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#4CAF50",
   "orientation": "portrait",
   "icons": [
-    {
-      "src": "icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ]
+  {
+    "src": "/Actividad-dominical-v-1.1/icon-192x192.png",
+    "sizes": "192x192",
+    "type": "image/png"
+  },
+  {
+    "src": "/Actividad-dominical-v-1.1/icon-512x512.png",
+    "sizes": "512x512",
+    "type": "image/png",
+    "purpose": "any maskable"
+  }
+]
 }

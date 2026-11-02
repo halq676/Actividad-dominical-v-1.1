@@ -60,6 +60,23 @@ function generarId(){
 function calcularTotalVentaObj(v){
   return v.presas.reduce((s,p) => s + (Number(p.valorUnitario||0) * Number(p.cantidad||0)), 0);
 }
+function actualizarTotalesVentas(){
+  let totalGeneral = 0, totalFiado = 0, totalPendiente = 0;
+
+  ventas.forEach(v => {
+    const totalVenta = calcularTotalVentaObj(v);
+    totalGeneral += totalVenta;
+    if(v.estado === 'Fiado') totalFiado += totalVenta;
+    else if(v.estado === 'Pendiente') totalPendiente += totalVenta;
+  });
+
+  const elGen = document.getElementById('totalGeneral');
+  if(elGen) elGen.innerText = totalGeneral.toLocaleString();
+  const elFiado = document.getElementById('totalFiado');
+  if(elFiado) elFiado.innerText = totalFiado.toLocaleString();
+  const elPend = document.getElementById('totalPendiente');
+  if(elPend) elPend.innerText = totalPendiente.toLocaleString();
+}
 function detalleResumen(v){
   return v.presas.map(p => `${p.tipo} x${p.cantidad}`).join(', ');
 }
@@ -373,19 +390,11 @@ window.renderVentasTabla = function(filtro = ''){
   if(!tablaBody) return;
   tablaBody.innerHTML = '';
 
-  let totalGeneral = 0, totalFiado = 0, totalPendiente = 0;
-
   const lista = filtro
     ? ventas.filter(v => v.cliente.toLowerCase().includes(filtro.toLowerCase()))
     : ventas;
 
   lista.forEach(v => {
-    const totalVenta = calcularTotalVentaObj(v);
-
-    if(v.estado === 'Pagado') totalGeneral += totalVenta;
-    else if(v.estado === 'Fiado') totalFiado += totalVenta;
-    else if(v.estado === 'Pendiente') totalPendiente += totalVenta;
-
     // Agregar la fila con color
     agregarFilaVenta(v);
 
@@ -450,13 +459,7 @@ window.renderVentasTabla = function(filtro = ''){
 
   }); // fin forEach lista
 
-  // actualizar totales en DOM
-  const elGen = document.getElementById('totalGeneral');
-  if(elGen) elGen.innerText = totalGeneral.toLocaleString();
-  const elFiado = document.getElementById('totalFiado');
-  if(elFiado) elFiado.innerText = totalFiado.toLocaleString();
-  const elPend = document.getElementById('totalPendiente');
-  if(elPend) elPend.innerText = totalPendiente.toLocaleString();
+  actualizarTotalesVentas();
 };
 
 // ---------------------
@@ -540,6 +543,7 @@ function actualizarDetallePresa(idVenta, idx, campo, valor){
   guardarInventario();
   guardarVentas();
   actualizarInventarioDOM();
+  actualizarTotalesVentas();
 }
 
 // ---------------------
@@ -598,6 +602,7 @@ window.agregarPresaAVenta = function(idVenta){
   }
 
   actualizarInventarioDOM();
+  actualizarTotalesVentas();
 };
 
 function eliminarPresaDeVenta(idVenta, idx){
@@ -636,6 +641,7 @@ function eliminarPresaDeVenta(idVenta, idx){
   guardarInventario();
   guardarVentas();
   actualizarInventarioDOM();
+  actualizarTotalesVentas();
 }
 
 // ---------------------

@@ -264,7 +264,7 @@ window.venderPresas = function(){
   renderLineasVenta();
   document.getElementById('clienteInput').value = '';
   actualizarInventarioDOM();
-  renderVentasTabla();
+  buscarVentas();
 };
 
 // ---------------------
@@ -280,7 +280,7 @@ window.actualizarEstadoVenta = function(idVenta, nuevoEstado){
   }
   guardarVentas();
   // Se llama a renderVentasTabla para que se reconstruya el input si el estado cambia a 'Pagado'
-  renderVentasTabla(document.getElementById('searchInput')?.value || '');
+  buscarVentas();
 };
 
 // ---------------------
@@ -390,8 +390,10 @@ window.renderVentasTabla = function(filtro = ''){
   if(!tablaBody) return;
   tablaBody.innerHTML = '';
 
-  const lista = filtro
-    ? ventas.filter(v => v.cliente.toLowerCase().includes(filtro.toLowerCase()))
+  const consulta = String(filtro).trim().toLocaleLowerCase();
+  actualizarSugerenciasClientes(consulta);
+  const lista = consulta
+    ? ventas.filter(v => String(v.cliente || '').toLocaleLowerCase().includes(consulta))
     : ventas;
 
   lista.forEach(v => {
@@ -664,25 +666,47 @@ window.eliminarVenta = function(idVenta){
   
   guardarInventario();
   guardarVentas();
-  renderVentasTabla(document.getElementById('searchInput')?.value || ''); // Se puede re-renderizar para actualizar totales
+  buscarVentas(); // Se re-renderiza para actualizar la tabla y los totales
   actualizarInventarioDOM();
 };
 
 // ---------------------
 // Buscar ventas
 // ---------------------
+function actualizarSugerenciasClientes(consulta = ''){
+  const sugerencias = document.getElementById('sugerenciasClientes');
+  if(!sugerencias) return;
+
+  const nombresVistos = new Set();
+  sugerencias.replaceChildren();
+
+  ventas.forEach(venta => {
+    const nombre = String(venta.cliente || '').trim();
+    const nombreNormalizado = nombre.toLocaleLowerCase();
+    if(!nombre || nombresVistos.has(nombreNormalizado) || !nombreNormalizado.includes(consulta)) return;
+
+    nombresVistos.add(nombreNormalizado);
+    const opcion = document.createElement('option');
+    opcion.value = nombre;
+    sugerencias.appendChild(opcion);
+  });
+}
+
 window.buscarVentas = function(){
   const q = (document.getElementById('searchInput')?.value || '').trim();
-  document.getElementById('resultadoBusqueda').innerText = '';
+  const resultado = document.getElementById('resultadoBusqueda');
   if(!q) {
     renderVentasTabla();
+    if(resultado) resultado.innerText = '';
     return;
   }
   renderVentasTabla(q);
-  const filtradas = ventas.filter(v => v.cliente.toLowerCase().includes(q.toLowerCase()));
-  document.getElementById('resultadoBusqueda').innerText = filtradas.length
-    ? `Resultados para "${q}":`
-    : 'No se encontraron resultados.';
+  const filtradas = ventas.filter(v => String(v.cliente || '').toLocaleLowerCase().includes(q.toLocaleLowerCase()));
+  if(resultado){
+    resultado.innerText = filtradas.length
+      ? `Resultados para "${q}": ${filtradas.length}`
+      : 'No se encontraron resultados.';
+  }
 };
 
 // ---------------------
@@ -719,4 +743,5 @@ document.addEventListener('DOMContentLoaded', () => {
   actualizarInventarioDOM();
   renderLineasVenta();
   renderVentasTabla();
+  document.getElementById('searchInput')?.addEventListener('input', buscarVentas);
 });

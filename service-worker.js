@@ -1,4 +1,4 @@
-const CACHE_NAME = 'venta-dominical-v8';
+const CACHE_NAME = 'venta-dominical-v1.0.1';
 
 const urlsToCache = [
   '/Actividad-dominical-v-1.1/',

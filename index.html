@@ -194,6 +194,77 @@
     .screen-panel .card-body {
       padding: 20px;
     }
+    .screen-panel #ventasMultiples .lineaVenta {
+      display: block;
+      margin: 0 0 14px;
+      padding: 16px;
+      border: 1px solid #e6eaf0;
+      border-radius: 12px;
+      background: #f8fafc;
+    }
+    .venta-linea-campos {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) minmax(110px, .5fr) auto auto;
+      align-items: end;
+      gap: 12px;
+    }
+    .venta-linea-campos label,
+    .venta-precios label {
+      display: block;
+      margin-bottom: 6px;
+      color: #526179;
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .venta-cantidad {
+      max-width: 140px;
+    }
+    .venta-linea-total {
+      min-width: 120px;
+      padding-bottom: 8px;
+      color: #243247;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .venta-precios {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid #e6eaf0;
+    }
+    .venta-precios-opciones {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .venta-precios-opciones .btn {
+      min-height: 42px;
+      min-width: 0;
+      padding: 6px 3px;
+      font-size: .85rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .venta-precio-manual {
+      max-width: 240px;
+      margin-top: 10px;
+    }
+    @media (max-width: 575.98px) {
+      .venta-linea-campos {
+        grid-template-columns: minmax(0, 1fr) minmax(90px, .6fr);
+      }
+      .venta-linea-total {
+        padding: 0;
+      }
+      .venta-precios-opciones .btn {
+        padding: 6px 1px;
+        font-size: .72rem;
+      }
+      .venta-precio-manual {
+        max-width: none;
+      }
+    }
     .screen-actions {
       display: flex;
       justify-content: flex-end;
@@ -319,8 +390,10 @@
     <div class="card">
     <div class="card-header"><h3>Datos de la venta</h3></div>
     <div class="card-body">
-      <input type="text" id="clienteInput" class="form-control w-50 mb-3" placeholder="Nombre del cliente">
+      <label for="clienteInput" class="form-label fw-semibold">Cliente</label>
+      <input type="text" id="clienteInput" class="form-control mb-3" placeholder="Nombre del cliente">
       <div id="ventasMultiples"></div>
+      <p class="form-text mt-0">Selecciona un precio unitario o escribe un valor manual para aplicar un descuento.</p>
       <button class="btn btn-secondary" onclick="agregarLineaVenta()">+ Agregar Presa</button>
       <button class="btn btn-success" onclick="venderPresas()">Guardar Venta</button>
     </div>

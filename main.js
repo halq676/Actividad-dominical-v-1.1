@@ -144,7 +144,7 @@ window.reiniciarInventario = function(){
 // Líneas de venta (formulario)
 // ---------------------
 window.agregarLineaVenta = function(){
-  lineasVenta.push({ tipo: 'Pechugas', cantidad: 1, precio: 0 });
+  lineasVenta.push({ tipo: 'Pechugas', cantidad: 1, precio: 7000 });
   renderLineasVenta();
 };
 window.eliminarLineaVenta = function(idx){
@@ -157,70 +157,132 @@ function renderLineasVenta() {
   cont.innerHTML = '';
 
   lineasVenta.forEach((lv, idx) => {
-    const subtotal = (Number(lv.precio) || 0) * (Number(lv.cantidad) || 0);
-
-    const opciones = Object.keys(PRECIOS).map(t =>
-      `<option value="${t}" ${lv.tipo === t ? 'selected' : ''}>${t}</option>`
-    ).join('');
-
     const div = document.createElement('div');
-    div.className = 'lineaVenta';
+    div.className = 'lineaVenta venta-linea';
 
     const selectTipo = document.createElement('select');
-    selectTipo.className = 'tipo-linea';
-    selectTipo.innerHTML = opciones;
+    selectTipo.className = 'form-select tipo-linea';
+    selectTipo.setAttribute('aria-label', 'Producto');
+    Object.keys(PRECIOS).forEach(tipo => {
+      const opcion = document.createElement('option');
+      opcion.value = tipo;
+      opcion.textContent = tipo;
+      opcion.selected = lv.tipo === tipo;
+      selectTipo.appendChild(opcion);
+    });
 
     const inputCant = document.createElement('input');
-    inputCant.className = 'cant-linea';
+    inputCant.className = 'form-control cant-linea venta-cantidad';
     inputCant.type = 'number';
     inputCant.min = '1';
     inputCant.value = lv.cantidad;
 
-    const inputPrecio = document.createElement('input');
-    inputPrecio.className = 'precio-linea';
-    inputPrecio.type = 'number';
-    inputPrecio.min = '0';
-    inputPrecio.value = lv.precio;
-    inputPrecio.style.width = '90px';
-
     const subtotalSpan = document.createElement('span');
-    subtotalSpan.style.width = '110px';
-    subtotalSpan.style.display = 'inline-block';
-    subtotalSpan.innerText = `Total: $${subtotal}`;
+    subtotalSpan.className = 'venta-linea-total';
+    subtotalSpan.setAttribute('aria-live', 'polite');
 
     const btnQuitar = document.createElement('button');
-    btnQuitar.className = 'btn btn-danger-soft btn-sm btn-quitar';
+    btnQuitar.className = 'btn btn-outline-danger btn-sm btn-quitar';
+    btnQuitar.type = 'button';
     btnQuitar.textContent = 'Eliminar';
 
-    div.appendChild(selectTipo);
-    div.appendChild(inputCant);
-    div.appendChild(inputPrecio);
-    div.appendChild(subtotalSpan);
-    div.appendChild(btnQuitar);
+    const campos = document.createElement('div');
+    campos.className = 'venta-linea-campos';
+    campos.appendChild(crearCampoVenta('Producto', selectTipo));
+    campos.appendChild(crearCampoVenta('Cantidad', inputCant));
+    campos.appendChild(subtotalSpan);
+    campos.appendChild(btnQuitar);
+
+    const precios = document.createElement('div');
+    precios.className = 'venta-precios';
+    const preciosLabel = document.createElement('label');
+    preciosLabel.textContent = 'Seleccionar precio unitario';
+    precios.appendChild(preciosLabel);
+
+    const opcionesPrecio = document.createElement('div');
+    opcionesPrecio.className = 'venta-precios-opciones';
+    const valoresSugeridos = obtenerPreciosSugeridos(lv.tipo);
+    valoresSugeridos.forEach(valor => {
+      const botonPrecio = document.createElement('button');
+      botonPrecio.className = `btn ${Number(lv.precio) === valor ? 'btn-primary' : 'btn-outline-primary'}`;
+      botonPrecio.type = 'button';
+      botonPrecio.textContent = `$${valor.toLocaleString('es-CO')}`;
+      botonPrecio.setAttribute('aria-pressed', String(Number(lv.precio) === valor));
+      botonPrecio.addEventListener('click', () => {
+        lv.precio = valor;
+        inputPrecio.value = valor;
+        actualizarPrecioLinea();
+      });
+      opcionesPrecio.appendChild(botonPrecio);
+    });
+    precios.appendChild(opcionesPrecio);
+
+    const inputPrecio = document.createElement('input');
+    inputPrecio.className = 'form-control venta-precio-manual';
+    inputPrecio.type = 'number';
+    inputPrecio.min = '0';
+    inputPrecio.step = '1';
+    inputPrecio.value = lv.precio;
+    inputPrecio.placeholder = 'Otro precio manual';
+    inputPrecio.setAttribute('aria-label', 'Precio unitario manual');
+    const precioManual = crearCampoVenta('Precio manual / descuento', inputPrecio);
+    precioManual.className = 'venta-precio-manual';
+    precios.appendChild(precioManual);
+
+    div.appendChild(campos);
+    div.appendChild(precios);
     cont.appendChild(div);
+    actualizarPrecioLinea();
+
+    function actualizarPrecioLinea(){
+      const subtotal = (Number(lv.precio) || 0) * (Number(lv.cantidad) || 0);
+      subtotalSpan.innerText = `Total: $${subtotal.toLocaleString('es-CO')}`;
+      opcionesPrecio.querySelectorAll('button').forEach((boton, opcionIdx) => {
+        const seleccionado = valoresSugeridos[opcionIdx] === Number(lv.precio);
+        boton.classList.toggle('btn-primary', seleccionado);
+        boton.classList.toggle('btn-outline-primary', !seleccionado);
+        boton.setAttribute('aria-pressed', String(seleccionado));
+      });
+    }
 
     selectTipo.addEventListener('change', e => {
+      const preciosAnteriores = obtenerPreciosSugeridos(lineasVenta[idx].tipo);
+      const esPrecioSugerido = preciosAnteriores.includes(Number(lineasVenta[idx].precio));
       lineasVenta[idx].tipo = e.target.value;
+      if(esPrecioSugerido){
+        lineasVenta[idx].precio = obtenerPreciosSugeridos(lineasVenta[idx].tipo)[0];
+      }
       renderLineasVenta();
     });
 
     inputCant.addEventListener('input', e => {
       lineasVenta[idx].cantidad = parseInt(e.target.value, 10) || 1;
-      const cant = Number(lineasVenta[idx].cantidad) || 0;
-      const precio = Number(lineasVenta[idx].precio) || 0;
-      subtotalSpan.innerText = `Total: $${(precio * cant).toLocaleString()}`;
+      lv.cantidad = lineasVenta[idx].cantidad;
+      actualizarPrecioLinea();
     });
 
     inputPrecio.addEventListener('input', e => {
       lineasVenta[idx].precio = parseInt(e.target.value, 10) || 0;
-      const cant = Number(lineasVenta[idx].cantidad) || 0;
-      const precio = Number(lineasVenta[idx].precio) || 0;
-      subtotalSpan.innerText = `Total: $${(precio * cant).toLocaleString()}`;
+      lv.precio = lineasVenta[idx].precio;
+      actualizarPrecioLinea();
     });
 
     btnQuitar.addEventListener('click', () => eliminarLineaVenta(idx));
   });
 
+}
+
+function crearCampoVenta(etiqueta, control){
+  const campo = document.createElement('div');
+  const label = document.createElement('label');
+  label.textContent = etiqueta;
+  campo.appendChild(label);
+  campo.appendChild(control);
+  return campo;
+}
+
+function obtenerPreciosSugeridos(tipo){
+  return [4000, 7000, 8000, 10000];
 }
 
 // ---------------------
